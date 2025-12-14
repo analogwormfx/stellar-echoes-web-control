@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>STM32 Control</title>
+<style>
+body {
+    font-family: sans-serif;
+    padding: 20px;
+}
+.slider {
+    width: 300px;
+}
+</style>
+</head>
+<body>
+
+<h2>STM32 Web Control</h2>
+
+<button id="connect">🔌 Connect</button>
+
+<hr>
+
+<label>
+Time:
+<input type="range" min="0" max="1000" step="1" value="500"
+       class="slider" id="time">
+<span id="timeVal">500</span>
+</label>
+
+<script>
+let port;
+let writer;
+
+async function connect() {
+    port = await navigator.serial.requestPort();
+    await port.open({ baudRate: 115200 });
+    writer = port.writable.getWriter();
+}
+
+async function send(cmd) {
+    if (!writer) return;
+    const data = new TextEncoder().encode(cmd + "\n");
+    await writer.write(data);
+}
+
+document.getElementById("connect").onclick = connect;
+
+const slider = document.getElementById("time");
+const out = document.getElementById("timeVal");
+
+slider.oninput = () => {
+    out.textContent = slider.value;
+};
+
+slider.onchange = () => {
+    send(`time ${slider.value}`);
+};
+</script>
+
+</body>
+</html>
