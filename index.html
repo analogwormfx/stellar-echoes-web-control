@@ -2,32 +2,59 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>STM32 Control</title>
+<title>STM32 Web Control</title>
+
+<!-- ===== CSS ===== -->
 <style>
 body {
-    font-family: sans-serif;
+    font-family: roboto;
     padding: 20px;
 }
+
+.param {
+    margin-bottom: 15px;
+}
+
 .slider {
     width: 300px;
 }
+
+.number {
+    width: 80px;
+    margin-left: 10px;
+}
 </style>
 </head>
+
 <body>
 
-<h2>STM32 Web Control</h2>
+<h2>Stellar Echoes Control Room</h2>
 
 <button id="connect">🔌 Connect</button>
 
 <hr>
 
-<label>
-Time:
-<input type="range" min="0" max="1000" step="1" value="500"
-       class="slider" id="time">
-<span id="timeVal">500</span>
-</label>
+<!-- ===== PARAMETERS ===== -->
 
+<div class="param" data-name="time" data-min="0" data-max="1000" data-step="1">
+  <label>Time</label><br>
+  <input type="range" class="slider">
+  <input type="number" class="number">
+</div>
+
+<div class="param" data-name="mix" data-min="0" data-max="100" data-step="1">
+  <label>Mix</label><br>
+  <input type="range" class="slider">
+  <input type="number" class="number">
+</div>
+
+<div class="param" data-name="feedback" data-min="0" data-max="0.95" data-step="0.01">
+  <label>Feedback</label><br>
+  <input type="range" class="slider">
+  <input type="number" class="number">
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
 <script>
 let port;
 let writer;
@@ -40,22 +67,38 @@ async function connect() {
 
 async function send(cmd) {
     if (!writer) return;
-    const data = new TextEncoder().encode(cmd + "\n");
-    await writer.write(data);
+    await writer.write(new TextEncoder().encode(cmd + "\n"));
 }
 
 document.getElementById("connect").onclick = connect;
 
-const slider = document.getElementById("time");
-const out = document.getElementById("timeVal");
+document.querySelectorAll(".param").forEach(param => {
+    const name = param.dataset.name;
+    const min  = parseFloat(param.dataset.min);
+    const max  = parseFloat(param.dataset.max);
+    const step = parseFloat(param.dataset.step);
 
-slider.oninput = () => {
-    out.textContent = slider.value;
-};
+    const slider = param.querySelector(".slider");
+    const number = param.querySelector(".number");
 
-slider.onchange = () => {
-    send(`time ${slider.value}`);
-};
+    slider.min = number.min = min;
+    slider.max = number.max = max;
+    slider.step = number.step = step;
+
+    slider.value = number.value = min;
+
+    slider.oninput = () => {
+        number.value = slider.value;
+    };
+
+    number.oninput = () => {
+        slider.value = number.value;
+    };
+
+    slider.onchange = number.onchange = () => {
+        send(`${name} ${slider.value}`);
+    };
+});
 </script>
 
 </body>
