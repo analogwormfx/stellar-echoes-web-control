@@ -19,11 +19,34 @@ body {
     width: 400px;
     --SliderColor: #000000
 }
-
+    
 .number {
     width: 50px;
     margin-left: 10px;
 }
+
+/* ===== RANGE SLIDER STYLE ===== */
+
+/* сам трек */
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 300px;
+    height: 4px;
+    background: #000;
+    border-radius: 2px;
+    outline: none;
+}
+
+/* бегунок (thumb) */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #000;
+    border-radius: 50%;
+    cursor: pointer;
+}
+    
 </style>
 </head>
 
@@ -122,6 +145,7 @@ document.querySelectorAll(".param").forEach(param => {
 
 </body>
 </html>
+
 
 
 
