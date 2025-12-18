@@ -105,7 +105,7 @@ input[type="range"]::-webkit-slider-thumb {
       <input type="number" class="number">
     </div>
 
-    <!-- next column -->
+    <!-- second column -->
     <div class="param" data-name="decay" data-min="0.0" data-max="1.0" data-step="0.01">
       <label>Decay</label><br>
       <input type="range" class="slider">
@@ -141,6 +141,44 @@ input[type="range"]::-webkit-slider-thumb {
       <input type="range" class="slider">
       <input type="number" class="number">
     </div>
+
+    <!-- third column -->
+    <div class="param" data-name="buffersize" data-min="0" data-max="2" data-step="1">
+      <label>Buffer Size</label><br>
+      <input type="range" class="slider">
+      <input type="number" class="number">
+    </div>
+    
+    <div class="param" data-name="drykill" data-min="0" data-max="2" data-step="1">
+      <label>Dry Mode</label><br>
+      <input type="range" class="slider">
+      <input type="number" class="number">
+    </div>
+    
+    <div class="param" data-name="regensec" data-min="0.0" data-max="1.0" data-step="0.01">
+      <label>Regen Secondary</label><br>
+      <input type="range" class="slider">
+      <input type="number" class="number">
+    </div>
+
+    <div class="param" data-name="stereomode" data-min="0" data-max="2" data-step="1">
+      <label>Stereo Mode</label><br>
+      <input type="range" class="slider">
+      <input type="number" class="number">
+    </div>
+    <!--
+    <div class="param" data-name="tonesec" data-min="0.0" data-max="1.0" data-step="0.01">
+      <label>Tone Secondary</label><br>
+      <input type="range" class="slider">
+      <input type="number" class="number">
+    </div>
+    
+    <div class="param" data-name="depthsec" data-min="0.0" data-max="1.0" data-step="0.01">
+      <label>Depth Secondary</label><br>
+      <input type="range" class="slider">
+      <input type="number" class="number">
+    </div>
+    -->
 </div>
 
 <!-- ===== JAVASCRIPT ===== -->
@@ -192,6 +230,7 @@ document.querySelectorAll(".param").forEach(param => {
 
 </body>
 </html>
+
 
 
 
