@@ -106,19 +106,20 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
 
     <!-- second column -->
-    <div class="param" data-name="decay" data-min="0.0" data-max="1.0" data-step="0.01">
+    <!-- decay = 1 -->
+    <div class="param" data-name="1" data-min="0" data-max="1000" data-step="1">
       <label>Decay</label><br>
       <input type="range" class="slider">
       <input type="number" class="number">
     </div>
-    
-    <div class="param" data-name="reverbmix" data-min="0.0" data-max="1.0" data-step="0.01">
+    <!-- rvb mix = 4 -->
+    <div class="param" data-name="4" data-min="0" data-max="1000" data-step="1">
       <label>Reverb Mix</label><br>
       <input type="range" class="slider">
       <input type="number" class="number">
     </div>
-    
-    <div class="param" data-name="reverbtone" data-min="0.0" data-max="1.0" data-step="0.01">
+    <!-- rvb tone = 7 -->
+    <div class="param" data-name="7" data-min="0" data-max="1000" data-step="1">
       <label>Reverb Tone</label><br>
       <input type="range" class="slider">
       <input type="number" class="number">
@@ -230,6 +231,7 @@ document.querySelectorAll(".param").forEach(param => {
 
 </body>
 </html>
+
 
 
 
