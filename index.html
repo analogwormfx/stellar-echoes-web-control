@@ -69,18 +69,19 @@ input[type="range"]::-webkit-slider-thumb {
 
 <!-- ===== PARAMETERS ===== -->
 <div class="params">
+    <!-- time = 0 -->
     <div class="param" data-name="0" data-min="200" data-max="1000" data-step="1">
       <label>Time</label><br>
       <input type="range" class="slider">
       <input type="number" class="number">
     </div>
-    
+    <!-- mix = 3 -->
     <div class="param" data-name="3" data-min="0" data-max="1000" data-step="1">
       <label>Mix</label><br>
       <input type="range" class="slider">
       <input type="number" class="number">
     </div>
-    
+    <!-- regen = 6 -->
     <div class="param" data-name="6" data-min="0" data-max="1000" data-step="1">
       <label>Regen</label><br>
       <input type="range" class="slider">
@@ -144,19 +145,20 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
 
     <!-- third column -->
-    <div class="param" data-name="buffersize" data-min="0" data-max="2" data-step="1">
+    <!-- buffersize = 2 -->
+    <div class="param" data-name="2" data-min="0" data-max="2" data-step="1">
       <label>Buffer Size</label><br>
       <input type="range" class="slider">
       <input type="number" class="number">
     </div>
-    
-    <div class="param" data-name="drykill" data-min="0" data-max="2" data-step="1">
+    <!-- drykill = 5 -->
+    <div class="param" data-name="5" data-min="0" data-max="2" data-step="1">
       <label>Dry Mode</label><br>
       <input type="range" class="slider">
       <input type="number" class="number">
     </div>
-    
-    <div class="param" data-name="regensec" data-min="0.0" data-max="1.0" data-step="0.01">
+    <!-- regensec = 8 -->
+    <div class="param" data-name="8" data-min="0" data-max="1000" data-step="1">
       <label>Regen Secondary</label><br>
       <input type="range" class="slider">
       <input type="number" class="number">
@@ -231,6 +233,7 @@ document.querySelectorAll(".param").forEach(param => {
 
 </body>
 </html>
+
 
 
 
