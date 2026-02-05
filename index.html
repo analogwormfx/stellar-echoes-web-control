@@ -163,9 +163,21 @@ input[type="range"]::-webkit-slider-thumb {
       <input type="range" class="slider">
       <input type="number" class="number">
     </div>
-
-    <div class="param" data-name="stereomode" data-min="0" data-max="2" data-step="1">
+    <!-- subdivision = 8 -->
+    <div class="param" data-name="16" data-min="0" data-max="2" data-step="1">
+      <label>Subdivision</label><br>
+      <input type="range" class="slider">
+      <input type="number" class="number">
+    </div>
+    <!-- stereomode = 8 -->
+    <div class="param" data-name="17" data-min="0" data-max="2" data-step="1">
       <label>Stereo Mode</label><br>
+      <input type="range" class="slider">
+      <input type="number" class="number">
+    </div>
+    <!-- depth third = 8 -->
+    <div class="param" data-name="15" data-min="0" data-max="1000" data-step="1">
+      <label>Time Mod</label><br>
       <input type="range" class="slider">
       <input type="number" class="number">
     </div>
@@ -233,6 +245,7 @@ document.querySelectorAll(".param").forEach(param => {
 
 </body>
 </html>
+
 
 
 
