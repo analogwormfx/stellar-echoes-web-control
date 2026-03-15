@@ -2,219 +2,904 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stellar Echoes Control Room</title>
+
+<!-- ===== GOOGLE FONTS ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- ===== CSS ===== -->
 <style>
-.params {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(6, auto);
-    grid-auto-flow: column;
-    column-gap: 100px;
-    max-width: 700px; 
-}
+/* ===== CSS VARIABLES (Design Tokens) ===== */
+:root {
+    /* Colors - grayscale palette */
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #141414;
+    --bg-elevated: #1c1c1c;
+    --bg-hover: #242424;
+    --bg-active: #2a2a2a;
     
-body {
-    font-family: sans-serif;
-    padding: 20px;
+    --text-primary: #e5e5e5;
+    --text-secondary: #a3a3a3;
+    --text-muted: #666666;
+    
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-default: rgba(255, 255, 255, 0.1);
+    --border-hover: rgba(255, 255, 255, 0.15);
+    
+    /* Typography */
+    --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    
+    /* Radius */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    
+    /* Transitions */
+    --transition-fast: 120ms ease;
+    --transition-base: 180ms ease;
 }
 
+/* ===== BASE STYLES ===== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: var(--space-xl);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== HEADER ===== */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-lg);
+}
+
+.title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+}
+
+/* ===== CONNECT BUTTON ===== */
+.connect-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-secondary);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+}
+
+.connect-btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+}
+
+.connect-btn:active {
+    background: var(--bg-active);
+}
+
+.connect-btn:focus-visible {
+    outline: 1px solid var(--text-muted);
+    outline-offset: 2px;
+}
+
+.connect-btn.connected {
+    color: var(--text-primary);
+    border-color: var(--text-muted);
+}
+
+.connect-btn .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    transition: background var(--transition-fast);
+}
+
+.connect-btn.connected .status-dot {
+    background: var(--text-primary);
+}
+
+/* ===== TOP CONTROLS ===== */
+.top-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.mode-group {
+    display: flex;
+    gap: 2px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: 2px;
+    border: 1px solid var(--border-subtle);
+}
+
+.mode-btn {
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+}
+
+.mode-btn:hover {
+    color: var(--text-secondary);
+}
+
+.mode-btn.active {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.mode-btn:focus-visible {
+    outline: 1px solid var(--text-muted);
+    outline-offset: -1px;
+}
+
+.bypass-controls {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.bypass-btn {
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+}
+
+.bypass-btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-default);
+    color: var(--text-secondary);
+}
+
+.bypass-btn.active {
+    background: var(--bg-primary);
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+}
+
+.bypass-btn:focus-visible {
+    outline: 1px solid var(--text-muted);
+    outline-offset: 2px;
+}
+
+/* Disconnected state for top controls */
+body:not(.connected) .top-controls {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+/* ===== PARAMS GRID ===== */
+.params {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+    max-width: 1300px;
+}
+
+.column {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    transition: opacity var(--transition-base), filter var(--transition-base);
+}
+
+.column-header {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Disconnected state */
+body:not(.connected) .column {
+    opacity: 0.35;
+    filter: grayscale(1);
+    pointer-events: none;
+}
+
+body.connected .column:hover {
+    border-color: var(--border-default);
+}
+
+/* ===== PARAM ITEM ===== */
 .param {
-    margin-bottom: 15px;
+    margin-bottom: var(--space-lg);
+}
+
+.param:last-child {
+    margin-bottom: 0;
+}
+
+.param-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xs);
+}
+
+/* ===== SLIDER ===== */
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
 }
 
 .slider {
-    width: 450px;
-    --SliderColor: #1c1c1c
-}
-    
-.number {
-    width: 50px;
-    margin-left: 10px;
-}
-
-/* ===== RANGE SLIDER STYLE ===== */
-
-/* сам трек */
-input[type="range"] {
+    flex: 1;
     -webkit-appearance: none;
-    width: 300px;
-    height: 4px;
-    background: #000;
-    border-radius: 2px;
+    appearance: none;
+    height: 5px;
+    background: var(--bg-elevated);
+    border-radius: 3px;
     outline: none;
-}
-
-/* бегунок (thumb) */
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 14px;
-    height: 14px;
-    background: #000;
-    border-radius: 50%;
     cursor: pointer;
 }
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    cursor: grab;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.slider::-webkit-slider-thumb:hover {
+    background: var(--text-primary);
+    transform: scale(1.1);
+}
+
+.slider::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+}
+
+.slider:focus-visible::-webkit-slider-thumb {
+    outline: 1px solid var(--text-muted);
+    outline-offset: 2px;
+}
+
+.slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--text-secondary);
+    border: none;
+    border-radius: 50%;
+    cursor: grab;
+}
+
+.slider::-moz-range-thumb:hover {
+    background: var(--text-primary);
+}
+
+.slider::-moz-range-track {
+    height: 5px;
+    background: var(--bg-elevated);
+    border-radius: 3px;
+}
+
+/* ===== NUMBER INPUT ===== */
+.number {
+    width: 56px;
+    padding: var(--space-xs) var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-primary);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    outline: none;
+    transition: border-color var(--transition-fast);
+}
+
+.number:hover {
+    border-color: var(--border-default);
+}
+
+.number:focus {
+    border-color: var(--text-muted);
+}
+
+.number::-webkit-outer-spin-button,
+.number::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.number[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* ===== BUTTON GROUP ===== */
+.button-group {
+    display: flex;
+    gap: 2px;
+    background: var(--bg-elevated);
+    border-radius: var(--radius-sm);
+    padding: 2px;
+}
+
+.btn-option {
+    flex: 1;
+    padding: var(--space-sm) var(--space-sm);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-option:hover {
+    color: var(--text-secondary);
+}
+
+.btn-option.active {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.btn-option:focus-visible {
+    outline: 1px solid var(--text-muted);
+    outline-offset: -1px;
+}
+
+/* ===== PRESET CONTROLS ===== */
+.preset-controls {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-xl);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.preset-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.preset-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.preset-select {
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    outline: none;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+    min-width: 70px;
+}
+
+.preset-select:hover {
+    border-color: var(--border-default);
+}
+
+.preset-select:focus {
+    border-color: var(--text-muted);
+}
+
+.preset-btn {
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+}
+
+.preset-btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-default);
+    color: var(--text-secondary);
+}
+
+.preset-btn:active {
+    background: var(--bg-active);
+}
+
+.preset-btn:focus-visible {
+    outline: 1px solid var(--text-muted);
+    outline-offset: 2px;
+}
+
+/* Disconnected state for preset controls */
+body:not(.connected) .preset-controls {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+/* ===== DISCONNECTED NOTICE ===== */
+.disconnected-notice {
+    display: none;
+    position: fixed;
+    bottom: var(--space-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    z-index: 100;
+}
+
+body:not(.connected) .disconnected-notice {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+    .params {
+        grid-template-columns: repeat(2, 1fr);
+    }
     
+    .column:nth-child(3) {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .mode-group {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .bypass-controls {
+        justify-content: center;
+    }
+    
+    .preset-controls {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-md);
+    }
+}
+
+@media (max-width: 640px) {
+    body {
+        padding: var(--space-md);
+    }
+    
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-sm);
+    }
+    
+    .params {
+        grid-template-columns: 1fr;
+    }
+    
+    .column:nth-child(3) {
+        grid-column: auto;
+    }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
 </style>
 </head>
 
 <body>
 
-<h2>Stellar Echoes Control Room</h2>
+<div class="header">
+    <h2 class="title">Stellar Echoes Control Room</h2>
+    <button id="connect" class="connect-btn">
+        <span class="status-dot"></span>
+        <span class="btn-text">Connect</span>
+    </button>
+</div>
 
-<button id="connect">🔌 Connect</button>
-
-<hr>
+<!-- ===== TOP CONTROLS ===== -->
+<div class="top-controls">
+    <div class="mode-group" data-param="mode">
+        <button class="mode-btn active" data-value="0">Analog</button>
+        <button class="mode-btn" data-value="1">Digital</button>
+        <button class="mode-btn" data-value="2">Tape</button>
+        <button class="mode-btn" data-value="3">Pitch</button>
+        <button class="mode-btn" data-value="4">Reverse</button>
+        <button class="mode-btn" data-value="5">Granular</button>
+    </div>
+    
+    <div class="bypass-controls">
+        <button class="bypass-btn" data-param="bypass" data-value="0">Bypass</button>
+        <button class="bypass-btn" data-param="rvb_bypass" data-value="0">Reverb Bypass</button>
+    </div>
+</div>
 
 <!-- ===== PARAMETERS ===== -->
 <div class="params">
-    <!-- time = 0 -->
-    <div class="param" data-name="0" data-min="200" data-max="1000" data-step="1">
-      <label>Time</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- mix = 3 -->
-    <div class="param" data-name="3" data-min="0" data-max="1000" data-step="1">
-      <label>Mix</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- regen = 6 -->
-    <div class="param" data-name="6" data-min="0" data-max="1000" data-step="1">
-      <label>Regen</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- rate = 9 -->
-    <div class="param" data-name="9" data-min="0" data-max="1000" data-step="1">
-      <label>Rate</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- tone = 11 -->
-    <div class="param" data-name="11" data-min="0" data-max="1000" data-step="1">
-      <label>Tone</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- depth = 13 -->
-    <div class="param" data-name="13" data-min="0" data-max="1000" data-step="1">
-      <label>Depth</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-
-    <!-- second column -->
-    <!-- decay = 1 -->
-    <div class="param" data-name="1" data-min="0" data-max="1000" data-step="1">
-      <label>Decay</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- rvb mix = 4 -->
-    <div class="param" data-name="4" data-min="0" data-max="1000" data-step="1">
-      <label>Reverb Mix</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- rvb tone = 7 -->
-    <div class="param" data-name="7" data-min="0" data-max="1000" data-step="1">
-      <label>Reverb Tone</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- waveform = 10 -->
-    <div class="param" data-name="10" data-min="0" data-max="3" data-step="1">
-      <label>Waveform</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- tonesec = 12 -->
-    <div class="param" data-name="12" data-min="0" data-max="1000" data-step="1">
-      <label>Tone Secondary</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- depthsec = 14 -->
-    <div class="param" data-name="14" data-min="0" data-max="1000" data-step="1">
-      <label>Depth Secondary</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-
-    <!-- third column -->
-    <!-- buffersize = 2 -->
-    <div class="param" data-name="2" data-min="0" data-max="2" data-step="1">
-      <label>Buffer Size</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- drykill = 5 -->
-    <div class="param" data-name="5" data-min="0" data-max="2" data-step="1">
-      <label>Dry Mode</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- regensec = 8 -->
-    <div class="param" data-name="8" data-min="0" data-max="1000" data-step="1">
-      <label>Regen Secondary</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- subdivision = 8 -->
-    <div class="param" data-name="16" data-min="0" data-max="2" data-step="1">
-      <label>Subdivision</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- stereomode = 8 -->
-    <div class="param" data-name="17" data-min="0" data-max="2" data-step="1">
-      <label>Stereo Mode</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!-- depth third = 8 -->
-    <div class="param" data-name="15" data-min="0" data-max="1000" data-step="1">
-      <label>Time Mod</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
-    </div>
-    <!--
-    <div class="param" data-name="tonesec" data-min="0.0" data-max="1.0" data-step="0.01">
-      <label>Tone Secondary</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
+    <!-- Column 1: Primary -->
+    <div class="column">
+        <div class="column-header">Primary</div>
+        
+        <!-- time = 0 -->
+        <div class="param" data-name="0" data-min="200" data-max="1000" data-step="1">
+            <div class="param-label">Time</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
+        
+        <!-- mix = 3 -->
+        <div class="param" data-name="3" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Mix</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
+        
+        <!-- regen = 6 -->
+        <div class="param" data-name="6" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Regen</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
+        
+        <!-- rate = 9 -->
+        <div class="param" data-name="9" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Rate</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
+        
+        <!-- tone = 11 -->
+        <div class="param" data-name="11" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Tone</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
+        
+        <!-- depth = 13 -->
+        <div class="param" data-name="13" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Depth</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
     </div>
     
-    <div class="param" data-name="depthsec" data-min="0.0" data-max="1.0" data-step="0.01">
-      <label>Depth Secondary</label><br>
-      <input type="range" class="slider">
-      <input type="number" class="number">
+    <!-- Column 2: Secondary -->
+    <div class="column">
+        <div class="column-header">Secondary</div>
+        
+        <!-- decay = 1 -->
+        <div class="param" data-name="1" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Decay</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
+        
+        <!-- rvb mix = 4 -->
+        <div class="param" data-name="4" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Reverb Mix</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
+        
+        <!-- rvb tone = 7 -->
+        <div class="param" data-name="7" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Reverb Tone</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
+        
+        <!-- waveform = 10 -->
+        <div class="param param-buttons" data-name="10" data-min="0" data-max="3" data-step="1">
+            <div class="param-label">Waveform</div>
+            <div class="button-group" data-param="10">
+                <button class="btn-option active" data-value="0">Sine</button>
+                <button class="btn-option" data-value="1">Tri</button>
+                <button class="btn-option" data-value="2">Square</button>
+                <button class="btn-option" data-value="3">Saw</button>
+            </div>
+        </div>
+        
+        <!-- tonesec = 12 -->
+        <div class="param" data-name="12" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Tone Secondary</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
+        
+        <!-- depthsec = 14 -->
+        <div class="param" data-name="14" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Depth Secondary</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
     </div>
-    -->
+    
+    <!-- Column 3: Tertiary -->
+    <div class="column">
+        <div class="column-header">Tertiary</div>
+        
+        <!-- buffersize = 2 -->
+        <div class="param param-buttons" data-name="2" data-min="0" data-max="2" data-step="1">
+            <div class="param-label">Buffer Size</div>
+            <div class="button-group" data-param="2">
+                <button class="btn-option active" data-value="0">Short</button>
+                <button class="btn-option" data-value="1">Medium</button>
+                <button class="btn-option" data-value="2">Long</button>
+            </div>
+        </div>
+        
+        <!-- drykill = 5 -->
+        <div class="param param-buttons" data-name="5" data-min="0" data-max="2" data-step="1">
+            <div class="param-label">Dry Mode</div>
+            <div class="button-group" data-param="5">
+                <button class="btn-option active" data-value="0">Normal</button>
+                <button class="btn-option" data-value="1">Mute</button>
+                <button class="btn-option" data-value="2">Kill</button>
+            </div>
+        </div>
+        
+        <!-- regensec = 8 -->
+        <div class="param" data-name="8" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Regen Secondary</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
+        
+        <!-- subdivision = 16 -->
+        <div class="param param-buttons" data-name="16" data-min="0" data-max="2" data-step="1">
+            <div class="param-label">Subdivision</div>
+            <div class="button-group" data-param="16">
+                <button class="btn-option active" data-value="0">1/4</button>
+                <button class="btn-option" data-value="1">1/8</button>
+                <button class="btn-option" data-value="2">1/16</button>
+            </div>
+        </div>
+        
+        <!-- stereomode = 17 -->
+        <div class="param param-buttons" data-name="17" data-min="0" data-max="2" data-step="1">
+            <div class="param-label">Stereo Mode</div>
+            <div class="button-group" data-param="17">
+                <button class="btn-option active" data-value="0">Mono</button>
+                <button class="btn-option" data-value="1">Stereo</button>
+                <button class="btn-option" data-value="2">Wide</button>
+            </div>
+        </div>
+        
+        <!-- time mod = 15 -->
+        <div class="param" data-name="15" data-min="0" data-max="1000" data-step="1">
+            <div class="param-label">Time Mod</div>
+            <div class="slider-container">
+                <input type="range" class="slider">
+                <input type="number" class="number">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== PRESET CONTROLS ===== -->
+<div class="preset-controls">
+    <div class="preset-item">
+        <select class="preset-select" id="recall-select">
+            <!-- Options 1-127 generated by JS -->
+        </select>
+        <button class="preset-btn" id="recall-btn">Recall Preset</button>
+    </div>
+    
+    <div class="preset-item">
+        <select class="preset-select" id="save-select">
+            <!-- Options 1-127 generated by JS -->
+        </select>
+        <button class="preset-btn" id="save-btn">Save Preset</button>
+    </div>
+</div>
+
+<!-- Disconnected Notice -->
+<div class="disconnected-notice">
+    <span>○</span>
+    Подключите устройство для управления
 </div>
 
 <!-- ===== JAVASCRIPT ===== -->
 <script>
 let port;
 let writer;
+let isConnected = false;
+
+const connectBtn = document.getElementById("connect");
+const btnText = connectBtn.querySelector(".btn-text");
+
+// Generate preset options 1-127
+function generatePresetOptions() {
+    const recallSelect = document.getElementById("recall-select");
+    const saveSelect = document.getElementById("save-select");
+    
+    for (let i = 1; i <= 127; i++) {
+        const option1 = document.createElement("option");
+        option1.value = i;
+        option1.textContent = i;
+        recallSelect.appendChild(option1);
+        
+        const option2 = document.createElement("option");
+        option2.value = i;
+        option2.textContent = i;
+        saveSelect.appendChild(option2);
+    }
+}
+
+generatePresetOptions();
 
 async function connect() {
-    port = await navigator.serial.requestPort();
-    await port.open({ baudRate: 115200 });
-    writer = port.writable.getWriter();
+    try {
+        port = await navigator.serial.requestPort();
+        await port.open({ baudRate: 115200 });
+        writer = port.writable.getWriter();
+        
+        isConnected = true;
+        document.body.classList.add("connected");
+        connectBtn.classList.add("connected");
+        btnText.textContent = "Connected";
+        
+    } catch (error) {
+        console.error("Connection failed:", error);
+    }
 }
+
+async function disconnect() {
+    try {
+        if (writer) {
+            await writer.close();
+            writer = null;
+        }
+        if (port) {
+            await port.close();
+            port = null;
+        }
+        
+        isConnected = false;
+        document.body.classList.remove("connected");
+        connectBtn.classList.remove("connected");
+        btnText.textContent = "Connect";
+        
+    } catch (error) {
+        console.error("Disconnect failed:", error);
+    }
+}
+
+connectBtn.onclick = () => {
+    if (isConnected) {
+        disconnect();
+    } else {
+        connect();
+    }
+};
 
 async function send(cmd) {
     if (!writer) return;
     await writer.write(new TextEncoder().encode(cmd + "\n"));
 }
 
-document.getElementById("connect").onclick = connect;
-
-document.querySelectorAll(".param").forEach(param => {
+// Initialize sliders
+document.querySelectorAll(".param:not(.param-buttons)").forEach(param => {
     const name = param.dataset.name;
     const min  = parseFloat(param.dataset.min);
     const max  = parseFloat(param.dataset.max);
@@ -241,26 +926,55 @@ document.querySelectorAll(".param").forEach(param => {
         send(`${name} ${slider.value}`);
     };
 });
+
+// Initialize button groups in columns
+document.querySelectorAll(".button-group").forEach(group => {
+    const param = group.closest(".param");
+    const name = param.dataset.name;
+    const buttons = group.querySelectorAll(".btn-option");
+    
+    buttons.forEach(btn => {
+        btn.onclick = () => {
+            buttons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            send(`${name} ${btn.dataset.value}`);
+        };
+    });
+});
+
+// Initialize mode group (top controls)
+const modeGroup = document.querySelector(".mode-group");
+const modeButtons = modeGroup.querySelectorAll(".mode-btn");
+const modeParam = modeGroup.dataset.param;
+
+modeButtons.forEach(btn => {
+    btn.onclick = () => {
+        modeButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        send(`${modeParam} ${btn.dataset.value}`);
+    };
+});
+
+// Initialize bypass buttons
+document.querySelectorAll(".bypass-btn").forEach(btn => {
+    btn.onclick = () => {
+        btn.classList.toggle("active");
+        const value = btn.classList.contains("active") ? "1" : "0";
+        send(`${btn.dataset.param} ${value}`);
+    };
+});
+
+// Initialize preset controls
+document.getElementById("recall-btn").onclick = () => {
+    const value = document.getElementById("recall-select").value;
+    send(`30 ${value}`);
+};
+
+document.getElementById("save-btn").onclick = () => {
+    const value = document.getElementById("save-select").value;
+    send(`31 ${value}`);
+};
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
