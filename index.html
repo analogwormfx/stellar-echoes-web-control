@@ -597,8 +597,8 @@ body:not(.connected) .disconnected-notice {
 <div class="top-controls">
     <div class="mode-group">
         <button class="mode-btn active" data-value="0">Analog</button>
-        <button class="mode-btn" data-value="1">Digital</button>
-        <button class="mode-btn" data-value="2">Tape</button>
+        <button class="mode-btn" data-value="2">Digital</button>
+        <button class="mode-btn" data-value="1">Tape</button>
         <button class="mode-btn" data-value="3">Pitch</button>
         <button class="mode-btn" data-value="4">Reverse</button>
         <button class="mode-btn" data-value="5">Granular</button>
@@ -706,10 +706,10 @@ body:not(.connected) .disconnected-notice {
         <div class="param param-buttons" data-name="10" data-min="0" data-max="3" data-step="1">
             <div class="param-label">Waveform</div>
             <div class="button-group" data-param="10">
-                <button class="btn-option active" data-value="0">Sine</button>
-                <button class="btn-option" data-value="1">Tri</button>
-                <button class="btn-option" data-value="2">Square</button>
-                <button class="btn-option" data-value="3">Saw</button>
+                <button class="btn-option active" data-value="0">Square</button>
+                <button class="btn-option" data-value="1">Triangle</button>
+                <button class="btn-option" data-value="2">Sine</button>
+                <button class="btn-option" data-value="3">Rnd</button>
             </div>
         </div>
         
@@ -741,7 +741,7 @@ body:not(.connected) .disconnected-notice {
             <div class="param-label">Buffer Size</div>
             <div class="button-group" data-param="2">
                 <button class="btn-option active" data-value="0">Short</button>
-                <button class="btn-option" data-value="1">Medium</button>
+                <button class="btn-option" data-value="1">Normal</button>
                 <button class="btn-option" data-value="2">Long</button>
             </div>
         </div>
@@ -750,9 +750,9 @@ body:not(.connected) .disconnected-notice {
         <div class="param param-buttons" data-name="5" data-min="0" data-max="2" data-step="1">
             <div class="param-label">Dry Mode</div>
             <div class="button-group" data-param="5">
-                <button class="btn-option active" data-value="0">Normal</button>
-                <button class="btn-option" data-value="1">Mute</button>
-                <button class="btn-option" data-value="2">Kill</button>
+                <button class="btn-option active" data-value="0">No Drykill</button>
+                <button class="btn-option" data-value="1">Drykill</button>
+                <button class="btn-option" data-value="2">No Dry</button>
             </div>
         </div>
         
@@ -769,9 +769,9 @@ body:not(.connected) .disconnected-notice {
         <div class="param param-buttons" data-name="16" data-min="0" data-max="2" data-step="1">
             <div class="param-label">Subdivision</div>
             <div class="button-group" data-param="16">
-                <button class="btn-option active" data-value="0">1/4</button>
-                <button class="btn-option" data-value="1">1/8</button>
-                <button class="btn-option" data-value="2">1/16</button>
+                <button class="btn-option active" data-value="0">x0.75</button>
+                <button class="btn-option" data-value="1">x0.5</button>
+                <button class="btn-option" data-value="2">x1</button>
             </div>
         </div>
         
@@ -779,9 +779,9 @@ body:not(.connected) .disconnected-notice {
         <div class="param param-buttons" data-name="17" data-min="0" data-max="2" data-step="1">
             <div class="param-label">Stereo Mode</div>
             <div class="button-group" data-param="17">
-                <button class="btn-option active" data-value="0">Mono</button>
-                <button class="btn-option" data-value="1">Stereo</button>
-                <button class="btn-option" data-value="2">Wide</button>
+                <button class="btn-option active" data-value="0">Wide</button>
+                <button class="btn-option" data-value="1">Ping Pong</button>
+                <button class="btn-option" data-value="2">Dual Mono</button>
             </div>
         </div>
         
