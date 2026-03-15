@@ -595,7 +595,7 @@ body:not(.connected) .disconnected-notice {
 
 <!-- ===== TOP CONTROLS ===== -->
 <div class="top-controls">
-    <div class="mode-group" data-param="mode">
+    <div class="mode-group">
         <button class="mode-btn active" data-value="0">Analog</button>
         <button class="mode-btn" data-value="1">Digital</button>
         <button class="mode-btn" data-value="2">Tape</button>
@@ -605,8 +605,8 @@ body:not(.connected) .disconnected-notice {
     </div>
     
     <div class="bypass-controls">
-        <button class="bypass-btn" data-param="bypass" data-value="0">Bypass</button>
-        <button class="bypass-btn" data-param="rvb_bypass" data-value="0">Reverb Bypass</button>
+        <button class="bypass-btn" data-cmd="28">Bypass</button>
+        <button class="bypass-btn" data-cmd="29">Reverb Bypass</button>
     </div>
 </div>
 
@@ -942,25 +942,23 @@ document.querySelectorAll(".button-group").forEach(group => {
     });
 });
 
-// Initialize mode group (top controls)
-const modeGroup = document.querySelector(".mode-group");
-const modeButtons = modeGroup.querySelectorAll(".mode-btn");
-const modeParam = modeGroup.dataset.param;
+// Initialize mode group (top controls) - sends "27 <value>"
+const modeButtons = document.querySelectorAll(".mode-btn");
 
 modeButtons.forEach(btn => {
     btn.onclick = () => {
         modeButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        send(`${modeParam} ${btn.dataset.value}`);
+        send(`27 ${btn.dataset.value}`);
     };
 });
 
-// Initialize bypass buttons
+// Initialize bypass buttons - Bypass: "28 0/1", Reverb Bypass: "29 0/1"
 document.querySelectorAll(".bypass-btn").forEach(btn => {
     btn.onclick = () => {
         btn.classList.toggle("active");
         const value = btn.classList.contains("active") ? "1" : "0";
-        send(`${btn.dataset.param} ${value}`);
+        send(`${btn.dataset.cmd} ${value}`);
     };
 });
 
